@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Skills - SkillSwap Hub{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Search Header -->
+    <div class="mb-5">
+        <h1 class="display-5 fw-bold mb-3">
+            <i class="fas fa-search text-primary"></i> Browse Skills
+        </h1>
+        
+        <!-- Search and Filter Form -->
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <form method="GET" action="{{ url_for('search') }}" id="searchForm" class="row g-3 align-items-end">
+                    <!-- Search Input -->
+                    <div class="col-md-6">
+                        <label for="q" class="form-label fw-semibold">Search Skills</label>
+                        <input 
+                            type="text" 
+                            class="form-control form-control-lg" 
+                            id="q" 
+                            name="q"
+                            value="{{ query }}"
+                            placeholder="Search by title, description or keyword...">
+                    </div>
+
+                    <!-- Category Filter -->
+                    <div class="col-md-4">
+                        <label for="category" class="form-label fw-semibold">Filter by Category</label>
+                        <select class="form-select form-select-lg" id="category" name="category">
+                            <option value="">-- All Categories --</option>
+                            {% for cat in categories %}
+                                <option value="{{ cat }}" {% if cat == category %}selected{% endif %}>{{ cat }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Search Button -->
+                    <div class="col-md-2 d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Results Summary -->
+        {% if query or category %}
+            <p class="text-muted mt-3">
+                {% if query %}
+                    Showing results for "<strong>{{ query }}</strong>"
+                    {% if category %} in <strong>{{ category }}</strong>{% endif %}
+                {% elif category %}
+                    Showing all skills in <strong>{{ category }}</strong>
+                {% endif %}
+                — <strong>{{ skills|length }}</strong> skill(s) found
+            </p>
+        {% endif %}
+    </div>
+
+    <!-- Results Section -->
+    {% if skills %}
+        <div class="row">
+            {% for skill in skills %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="skill-card-search h-100">
+                        <div class="skill-card-header">
+                            <span class="badge bg-primary">{{ skill.category }}</span>
+                            {% if logged_in and user_id == skill.user_id|string %}
+                                <div class="skill-actions">
+                                    <a href="{{ url_for('edit_skill', skill_id=skill._id) }}" class="btn btn-sm btn-warning" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <h5 class="card-title fw-bold mt-3">{{ skill.title }}</h5>
+                        <p class="card-text text-muted">{{ skill.description[:100] }}...</p>
+
+                        <div class="skill-meta mb-3">
+                            <small class="text-muted d-block">
+                                <i class="fas fa-user"></i> <strong>{{ skill.user_name }}</strong>
+                            </small>
+                            <small class="text-muted">
+                                <i class="fas fa-calendar"></i> {{ skill.created_at.strftime('%d %b %Y') }}
+                            </small>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            {% if logged_in %}
+                                <button class="btn btn-outline-primary btn-sm flex-grow-1" onclick="viewSkillDetails('{{ skill._id }}')">
+                                    <i class="fas fa-eye"></i> View Details
+                                </button>
+                                {% if user_id != skill.user_id|string %}
+                                    <button class="btn btn-outline-success btn-sm flex-grow-1">
+                                        <i class="fas fa-envelope"></i> Contact
+                                    </button>
+                                {% endif %}
+                            {% else %}
+                                <button class="btn btn-outline-primary btn-sm flex-grow-1" onclick="location.href='{{ url_for('login') }}'">
+                                    <i class="fas fa-eye"></i> View Details
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <!-- No Results Message -->
+        <div class="alert alert-warning text-center py-5" role="alert">
+            <i class="fas fa-search fa-3x text-muted mb-3 d-block"></i>
+            <h5>No Skills Found</h5>
+            <p class="text-muted mb-3">
+                {% if query %}
+                    No skills match your search for "<strong>{{ query }}</strong>"
+                {% elif category %}
+                    No skills found in <strong>{{ category }}</strong>
+                {% else %}
+                    No skills have been posted yet
+                {% endif %}
+            </p>
+            {% if query or category %}
+                <a href="{{ url_for('search') }}" class="btn btn-outline-primary">
+                    <i class="fas fa-redo"></i> Clear Filters
+                </a>
+            {% endif %}
+            {% if not logged_in %}
+                <p class="text-muted mt-3">
+                    <a href="{{ url_for('signup') }}" class="text-primary fw-semibold">Sign up</a> to share your own skills!
+                </p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+<script>
+function viewSkillDetails(skillId) {
+    // In a full implementation, this could open a modal or navigate to a details page
+    alert('Skill ID: ' + skillId);
+}
+</script>
+{% endblock %}

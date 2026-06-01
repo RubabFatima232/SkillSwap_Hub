@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Skill - SkillSwap Hub{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="mb-4">
+                <h1 class="display-5 fw-bold mb-2">
+                    <i class="fas fa-edit text-primary"></i> Edit Your Skill
+                </h1>
+                <p class="text-muted">Update your skill information</p>
+            </div>
+
+            <!-- Form Card -->
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-5">
+                    <form method="POST" action="{{ url_for('edit_skill', skill_id=skill._id) }}" id="editSkillForm">
+                        <!-- Title Field -->
+                        <div class="mb-4">
+                            <label for="title" class="form-label fw-semibold mb-2">
+                                <i class="fas fa-heading text-primary"></i> Skill Title
+                            </label>
+                            <input 
+                                type="text" 
+                                class="form-control form-control-lg" 
+                                id="title" 
+                                name="title" 
+                                value="{{ skill.title }}"
+                                required
+                                minlength="3"
+                                maxlength="100">
+                            <small class="form-text text-muted">Give your skill a clear, descriptive title</small>
+                        </div>
+
+                        <!-- Category Field -->
+                        <div class="mb-4">
+                            <label for="category" class="form-label fw-semibold mb-2">
+                                <i class="fas fa-tag text-primary"></i> Category
+                            </label>
+                            <select class="form-select form-select-lg" id="category" name="category" required>
+                                {% for cat in categories %}
+                                    <option value="{{ cat }}" {% if cat == skill.category %}selected{% endif %}>{{ cat }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Description Field -->
+                        <div class="mb-4">
+                            <label for="description" class="form-label fw-semibold mb-2">
+                                <i class="fas fa-align-left text-primary"></i> Description
+                            </label>
+                            <textarea 
+                                class="form-control" 
+                                id="description" 
+                                name="description" 
+                                rows="6" 
+                                required
+                                minlength="10"
+                                maxlength="2000"
+                                style="min-height: 150px;">{{ skill.description }}</textarea>
+                            <small class="form-text text-muted">Provide detailed information about your skill</small>
+                        </div>
+
+                        <!-- Skill Info -->
+                        <div class="alert alert-info" role="alert">
+                            <small>
+                                <i class="fas fa-info-circle"></i>
+                                <strong>Created:</strong> {{ skill.created_at.strftime('%d %B %Y at %H:%M') }}<br>
+                                <strong>Last Updated:</strong> {{ skill.updated_at.strftime('%d %B %Y at %H:%M') }}
+                            </small>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-primary btn-lg flex-grow-1">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary btn-lg">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

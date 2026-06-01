@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up - SkillSwap Hub{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-5">
+                    <h2 class="card-title text-center mb-4 fw-bold">
+                        <i class="fas fa-user-plus text-primary"></i> Create Account
+                    </h2>
+
+                    <form method="POST" action="{{ url_for('signup') }}" id="signupForm">
+                        <!-- Name Field -->
+                        <div class="mb-3">
+                            <label for="name" class="form-label fw-semibold">Full Name</label>
+                            <input 
+                                type="text" 
+                                class="form-control form-control-lg" 
+                                id="name" 
+                                name="name" 
+                                placeholder="Enter your full name"
+                                required>
+                            <small class="form-text text-muted">Use your real name for better connections</small>
+                        </div>
+
+                        <!-- Email Field -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label fw-semibold">Email Address</label>
+                            <input 
+                                type="email" 
+                                class="form-control form-control-lg" 
+                                id="email" 
+                                name="email" 
+                                placeholder="your@email.com"
+                                required>
+                            <small class="form-text text-muted">We'll never share your email</small>
+                        </div>
+
+                        <!-- Password Field -->
+                        <div class="mb-3">
+                            <label for="password" class="form-label fw-semibold">Password</label>
+                            <input 
+                                type="password" 
+                                class="form-control form-control-lg" 
+                                id="password" 
+                                name="password" 
+                                placeholder="At least 6 characters"
+                                required
+                                minlength="6">
+                            <small class="form-text text-muted">Minimum 6 characters</small>
+                        </div>
+
+                        <!-- Confirm Password Field -->
+                        <div class="mb-4">
+                            <label for="confirm_password" class="form-label fw-semibold">Confirm Password</label>
+                            <input 
+                                type="password" 
+                                class="form-control form-control-lg" 
+                                id="confirm_password" 
+                                name="confirm_password" 
+                                placeholder="Confirm your password"
+                                required
+                                minlength="6">
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary btn-lg w-100 fw-semibold">
+                            <i class="fas fa-user-check"></i> Create Account
+                        </button>
+
+                        <!-- Divider -->
+                        <hr class="my-4">
+
+                        <!-- Login Link -->
+                        <p class="text-center text-muted">
+                            Already have an account? 
+                            <a href="{{ url_for('login') }}" class="text-primary fw-semibold text-decoration-none">
+                                Login here
+                            </a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Info Cards -->
+            <div class="row mt-4 g-3">
+                <div class="col-md-6">
+                    <div class="small-card text-center">
+                        <i class="fas fa-lock fa-2x text-success mb-2"></i>
+                        <p class="small fw-semibold">Secure & Safe</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="small-card text-center">
+                        <i class="fas fa-zap fa-2x text-warning mb-2"></i>
+                        <p class="small fw-semibold">Quick Setup</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .small-card {
+        padding: 1.5rem;
+        background: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}

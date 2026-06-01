@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Skill - SkillSwap Hub{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="mb-4">
+                <h1 class="display-5 fw-bold mb-2">
+                    <i class="fas fa-plus-circle text-primary"></i> Share Your Skill
+                </h1>
+                <p class="text-muted">Fill in the details below to post your skill</p>
+            </div>
+
+            <!-- Form Card -->
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-5">
+                    <form method="POST" action="{{ url_for('create_skill') }}" id="createSkillForm">
+                        <!-- Title Field -->
+                        <div class="mb-4">
+                            <label for="title" class="form-label fw-semibold mb-2">
+                                <i class="fas fa-heading text-primary"></i> Skill Title
+                            </label>
+                            <input 
+                                type="text" 
+                                class="form-control form-control-lg" 
+                                id="title" 
+                                name="title" 
+                                placeholder="e.g., Web Development, Digital Marketing, Photography"
+                                required
+                                minlength="3"
+                                maxlength="100">
+                            <small class="form-text text-muted">Give your skill a clear, descriptive title (3-100 characters)</small>
+                        </div>
+
+                        <!-- Category Field -->
+                        <div class="mb-4">
+                            <label for="category" class="form-label fw-semibold mb-2">
+                                <i class="fas fa-tag text-primary"></i> Category
+                            </label>
+                            <select class="form-select form-select-lg" id="category" name="category" required>
+                                <option value="">-- Select a Category --</option>
+                                {% for cat in categories %}
+                                    <option value="{{ cat }}">{{ cat }}</option>
+                                {% endfor %}
+                            </select>
+                            <small class="form-text text-muted">Choose the most relevant category</small>
+                        </div>
+
+                        <!-- Description Field -->
+                        <div class="mb-4">
+                            <label for="description" class="form-label fw-semibold mb-2">
+                                <i class="fas fa-align-left text-primary"></i> Description
+                            </label>
+                            <textarea 
+                                class="form-control" 
+                                id="description" 
+                                name="description" 
+                                rows="6" 
+                                placeholder="Describe your skill in detail. Include what you can teach, your experience level, and what learners will gain..."
+                                required
+                                minlength="10"
+                                maxlength="2000" 
+                                style="min-height: 150px;"></textarea>
+                            <small class="form-text text-muted">Provide detailed information about your skill (10-2000 characters)</small>
+                        </div>
+
+                        <!-- Character Counter -->
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <small class="text-muted">
+                                    Title: <span id="titleCount">0</span>/100
+                                </small>
+                            </div>
+                            <div class="col-6 text-end">
+                                <small class="text-muted">
+                                    Description: <span id="descCount">0</span>/2000
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-primary btn-lg flex-grow-1">
+                                <i class="fas fa-check-circle"></i> Post Skill
+                            </button>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary btn-lg">
+                                <i class="fas fa-times-circle"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Tips Section -->
+            <div class="card mt-4 bg-light border-0">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-3">
+                        <i class="fas fa-lightbulb text-warning"></i> Tips for a Great Skill Post
+                    </h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success"></i> 
+                            <strong>Be specific:</strong> Clearly state what you can teach
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success"></i> 
+                            <strong>Show expertise:</strong> Mention your experience and certifications
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success"></i> 
+                            <strong>Set expectations:</strong> Explain what learners will achieve
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success"></i> 
+                            <strong>Use keywords:</strong> Include relevant terms for better search visibility
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('title').addEventListener('input', function() {
+    document.getElementById('titleCount').textContent = this.value.length;
+});
+
+document.getElementById('description').addEventListener('input', function() {
+    document.getElementById('descCount').textContent = this.value.length;
+});
+</script>
+{% endblock %}
